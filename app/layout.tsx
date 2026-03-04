@@ -6,13 +6,13 @@ const syne = Syne({
   subsets: ['latin'],
   variable: '--font-display',
   display: 'swap',
-  adjustFontFallback: false,
+  preload: false,
 });
 
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
-  adjustFontFallback: false,
+  preload: false,
 });
 
 export const metadata: Metadata = {
