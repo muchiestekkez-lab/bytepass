@@ -3,9 +3,10 @@ import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 
 // GET /api/auth/google — redirect user to Google's consent screen
-export async function GET() {
+export async function GET(request: Request) {
   const clientId = process.env.GOOGLE_CLIENT_ID!;
-  const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/google/callback`;
+  const { protocol, host } = new URL(request.url);
+  const redirectUri = `${protocol}//${host}/api/auth/google/callback`;
 
   const params = new URLSearchParams({
     client_id: clientId,

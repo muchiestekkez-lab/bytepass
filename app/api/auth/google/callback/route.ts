@@ -26,10 +26,11 @@ async function uniqueUsername(base: string): Promise<string> {
 }
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
+  const reqUrl = new URL(req.url);
+  const { searchParams } = reqUrl;
   const code = searchParams.get('code');
   const error = searchParams.get('error');
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL!;
+  const appUrl = `${reqUrl.protocol}//${reqUrl.host}`;
 
   // User denied Google access
   if (error || !code) {
