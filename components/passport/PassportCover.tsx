@@ -57,10 +57,6 @@ export default function PassportCover({
           </div>
         </div>
 
-        <div className="mt-5 inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5">
-          <span className="text-base">{citizenLevel.emoji}</span>
-          <span className="text-sm font-bold text-white">{citizenLevel.title}</span>
-        </div>
       </div>
 
       {/* ── Stats strip ── */}
