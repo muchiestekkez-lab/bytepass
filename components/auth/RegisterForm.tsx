@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import GoogleButton from './GoogleButton';
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -41,13 +42,23 @@ export default function RegisterForm() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="space-y-4">
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl px-4 py-3">
           {error}
         </div>
       )}
 
+      {/* Google Sign-Up — fastest path */}
+      <GoogleButton label="Sign up with Google (Fastest)" />
+
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-px bg-slate-200" />
+        <span className="text-xs text-slate-400 font-medium">or fill in manually</span>
+        <div className="flex-1 h-px bg-slate-200" />
+      </div>
+
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label className="block text-sm font-semibold text-slate-700 mb-1.5">Username</label>
         <input
@@ -131,5 +142,6 @@ export default function RegisterForm() {
         {loading ? 'Creating passport...' : 'Create Passport 🛂'}
       </button>
     </form>
+    </div>
   );
 }
