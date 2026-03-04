@@ -19,6 +19,7 @@ export default async function PublicProfilePage({ params }: { params: { username
       id: true,
       username: true,
       bio: true,
+      avatar: true,
       internetYear: true,
       createdAt: true,
       flights: {
@@ -58,6 +59,7 @@ export default async function PublicProfilePage({ params }: { params: { username
         <PassportCover
           username={user.username}
           bio={user.bio}
+          avatar={user.avatar}
           internetAge={internetAge}
           citizenLevel={citizenLevel}
           createdAt={user.createdAt}

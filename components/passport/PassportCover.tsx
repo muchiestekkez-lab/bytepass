@@ -5,6 +5,7 @@ import PlatformLogo from '@/components/ui/PlatformLogo';
 interface PassportCoverProps {
   username: string;
   bio: string | null;
+  avatar?: string | null;
   internetAge: number;
   citizenLevel: { title: string; emoji: string; color: string };
   createdAt: Date;
@@ -15,6 +16,7 @@ interface PassportCoverProps {
 export default function PassportCover({
   username,
   bio,
+  avatar,
   internetAge,
   citizenLevel,
   createdAt,
@@ -36,8 +38,17 @@ export default function PassportCover({
         </div>
 
         <div className="flex items-end gap-5">
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#FF6EC7] to-[#7B61FF] flex items-center justify-center text-3xl font-black text-white flex-shrink-0 shadow-lg border-2 border-white/20">
-            {username[0].toUpperCase()}
+          {/* Avatar — photo or initials fallback */}
+          <div className="w-20 h-20 rounded-2xl flex-shrink-0 overflow-hidden shadow-lg border-2 border-white/20"
+            style={{ background: 'linear-gradient(135deg,#FF6EC7,#7B61FF)' }}>
+            {avatar ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={avatar} alt={username} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-3xl font-black text-white">
+                {username[0].toUpperCase()}
+              </div>
+            )}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-blue-200/50 text-[10px] uppercase tracking-widest mb-0.5">Passport Holder</p>

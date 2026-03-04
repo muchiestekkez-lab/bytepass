@@ -9,7 +9,7 @@ export async function PATCH(req: Request) {
   if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const body = await req.json();
-  const { internetYear, bio } = body;
+  const { internetYear, bio, avatar } = body;
 
   const currentYear = new Date().getFullYear();
   if (internetYear !== undefined) {
@@ -19,13 +19,23 @@ export async function PATCH(req: Request) {
     }
   }
 
+  // avatar must be a base64 data URL or a https:// URL; reject anything else
+  if (avatar !== undefined && avatar !== null) {
+    const isDataUrl = typeof avatar === 'string' && avatar.startsWith('data:image/');
+    const isHttpsUrl = typeof avatar === 'string' && avatar.startsWith('https://');
+    if (!isDataUrl && !isHttpsUrl) {
+      return NextResponse.json({ error: 'Invalid avatar format' }, { status: 400 });
+    }
+  }
+
   const user = await prisma.user.update({
     where: { id: auth.userId },
     data: {
       ...(internetYear !== undefined ? { internetYear: Number(internetYear) } : {}),
       ...(bio !== undefined ? { bio: String(bio).slice(0, 160) } : {}),
+      ...(avatar !== undefined ? { avatar: avatar ?? null } : {}),
     },
   });
 
-  return NextResponse.json({ ok: true, internetYear: user.internetYear, bio: user.bio });
+  return NextResponse.json({ ok: true, internetYear: user.internetYear, bio: user.bio, avatar: user.avatar });
 }

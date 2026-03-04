@@ -52,6 +52,7 @@ export default async function PassportPage() {
         <PassportCover
           username={user.username}
           bio={user.bio}
+          avatar={user.avatar}
           internetAge={internetAge}
           citizenLevel={citizenLevel}
           createdAt={user.createdAt}
