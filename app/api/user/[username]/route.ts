@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/user/[username] — public profile data
 export async function GET(_req: Request, { params }: { params: { username: string } }) {
   const user = await prisma.user.findUnique({

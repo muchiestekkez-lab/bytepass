@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { getAuthUser } from '@/lib/auth';
 import { generateFlightNumber } from '@/lib/utils';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/flights — list authenticated user's flights
 export async function GET() {
   const auth = await getAuthUser();
