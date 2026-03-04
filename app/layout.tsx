@@ -16,11 +16,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'BytePass — Stamp Your Internet.',
+  title: 'Cloud Trip — Stamp Your Internet.',
   description:
     'Create your Internet Passport. Log flights between social platforms. Collect stamps. Share your digital journey.',
   openGraph: {
-    title: 'BytePass — Stamp Your Internet.',
+    title: 'Cloud Trip — Stamp Your Internet.',
     description: 'Your Internet Passport. Log flights. Collect stamps.',
     type: 'website',
   },

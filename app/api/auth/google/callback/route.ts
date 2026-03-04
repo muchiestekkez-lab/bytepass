@@ -104,7 +104,7 @@ export async function GET(req: Request) {
           password: null,
           googleId: profile.id,
           avatar: profile.picture || null,
-          internetYear: new Date().getFullYear(), // they can update on dashboard
+          internetYear: new Date().getFullYear() - 5, // default; user edits in Settings
           bio: null,
         },
       });

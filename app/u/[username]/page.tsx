@@ -1,15 +1,14 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { calcInternetAge, getCitizenLevel, formatDate, getUniqueStamps } from '@/lib/utils';
+import { calcInternetAge, getCitizenLevel, getUniqueStamps } from '@/lib/utils';
 import PassportCover from '@/components/passport/PassportCover';
-import StampGrid from '@/components/passport/StampGrid';
 import FlightCard from '@/components/flights/FlightCard';
 
 export async function generateMetadata({ params }: { params: { username: string } }) {
   return {
-    title: `@${params.username}'s Passport — BytePass`,
-    description: `Check out @${params.username}'s Internet Passport on BytePass.`,
+    title: `@${params.username}'s Passport — Cloud Trip`,
+    description: `Check out @${params.username}'s Internet Passport on Cloud Trip.`,
   };
 }
 
@@ -35,7 +34,6 @@ export default async function PublicProfilePage({ params }: { params: { username
   const citizenLevel = getCitizenLevel(totalFlights);
   const internetAge = calcInternetAge(user.internetYear);
   const visitedSlugs = getUniqueStamps(user.flights);
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://bytepass.app';
 
   return (
     <div className="min-h-screen animated-bg">
@@ -45,7 +43,7 @@ export default async function PublicProfilePage({ params }: { params: { username
           href="/"
           className="font-display text-xl font-black gradient-text bg-gradient-to-r from-[#FF6EC7] via-[#7B61FF] to-[#00D1FF]"
         >
-          BytePass ✈️
+          Cloud Trip ☁️✈️
         </Link>
         <Link
           href="/register"
@@ -56,7 +54,7 @@ export default async function PublicProfilePage({ params }: { params: { username
       </nav>
 
       <div className="max-w-3xl mx-auto px-6 py-8 space-y-8">
-        {/* Passport cover */}
+        {/* Passport — stamps are integrated inside */}
         <PassportCover
           username={user.username}
           bio={user.bio}
@@ -64,27 +62,19 @@ export default async function PublicProfilePage({ params }: { params: { username
           citizenLevel={citizenLevel}
           createdAt={user.createdAt}
           totalFlights={totalFlights}
+          visitedSlugs={visitedSlugs}
         />
 
         {/* Share button */}
         <div className="flex justify-center">
           <a
-            href={`https://twitter.com/intent/tweet?text=Check%20out%20my%20Internet%20Passport%20on%20BytePass%20%E2%9C%88%EF%B8%8F&url=${appUrl}/u/${user.username}`}
+            href={`https://twitter.com/intent/tweet?text=Check%20out%20my%20Internet%20Passport%20on%20Cloud%20Trip%20%E2%9C%88%EF%B8%8F&url=https://bytepass-app.vercel.app/u/${user.username}`}
             target="_blank"
             rel="noopener noreferrer"
             className="px-6 py-3 rounded-2xl font-bold text-sm bg-gradient-to-r from-[#FF6EC7] to-[#7B61FF] text-white shadow-md hover:scale-105 transition-all"
           >
             Share on Twitter/X 🐦
           </a>
-        </div>
-
-        {/* Stamps */}
-        <div>
-          <h2 className="font-display text-xl font-bold text-slate-800 mb-4">
-            Stamps <span className="text-[#7B61FF]">{visitedSlugs.size}</span>
-            <span className="text-slate-400">/9</span>
-          </h2>
-          <StampGrid visitedSlugs={visitedSlugs} />
         </div>
 
         {/* Travel history */}

@@ -1,6 +1,6 @@
 import FlightForm from '@/components/flights/FlightForm';
 
-export const metadata = { title: 'Log Flight — BytePass' };
+export const metadata = { title: 'Log Flight — Cloud Trip' };
 
 export default function NewFlightPage() {
   return (

@@ -8,7 +8,7 @@ export default function LandingPage() {
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 py-5 max-w-6xl mx-auto">
         <span className="font-display text-2xl font-black gradient-text bg-gradient-to-r from-[#FF6EC7] via-[#7B61FF] to-[#00D1FF]">
-          BytePass ✈️
+          Cloud Trip ☁️✈️
         </span>
         <div className="flex gap-3">
           <Link
@@ -170,7 +170,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="text-center py-8 text-sm text-slate-400">
-        BytePass © {new Date().getFullYear()} · Stamp Your Internet ✈️
+        Cloud Trip © {new Date().getFullYear()} · Stamp Your Internet ✈️
       </footer>
     </div>
   );

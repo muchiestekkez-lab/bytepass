@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import LoginForm from '@/components/auth/LoginForm';
 
-export const metadata = { title: 'Login — BytePass' };
+export const metadata = { title: 'Login — Cloud Trip' };
 
 export default function LoginPage() {
   return (
@@ -10,7 +10,7 @@ export default function LoginPage() {
       {/* Logo */}
       <div className="text-center mb-8">
         <Link href="/" className="font-display text-3xl font-black gradient-text bg-gradient-to-r from-[#FF6EC7] via-[#7B61FF] to-[#00D1FF]">
-          BytePass ✈️
+          Cloud Trip ☁️✈️
         </Link>
         <p className="text-slate-500 mt-2 text-sm">Welcome back, traveller.</p>
       </div>

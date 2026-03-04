@@ -9,6 +9,7 @@ const links = [
   { href: '/passport', label: 'My Passport', emoji: '🛂' },
   { href: '/flights', label: 'Flights', emoji: '✈️' },
   { href: '/flights/new', label: 'Log Flight', emoji: '🛫' },
+  { href: '/settings', label: 'Settings', emoji: '⚙️' },
 ];
 
 export default function Sidebar() {

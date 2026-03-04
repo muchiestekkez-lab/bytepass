@@ -1,5 +1,6 @@
 import { formatDate } from '@/lib/utils';
 import type { Platform, Flight } from '@prisma/client';
+import PlatformLogo from '@/components/ui/PlatformLogo';
 
 type BoardingPassFlight = Flight & {
   from: Platform;
@@ -24,7 +25,7 @@ export default function BoardingPass({ flight }: { flight: BoardingPassFlight })
           {/* Airline branding */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <p className="text-white/60 text-xs font-semibold uppercase tracking-widest">BytePass Airways</p>
+              <p className="text-white/60 text-xs font-semibold uppercase tracking-widest">Cloud Trip Airways</p>
               <p className="text-white font-bold text-lg">BOARDING PASS</p>
             </div>
             <span className="text-4xl">✈️</span>
@@ -35,10 +36,10 @@ export default function BoardingPass({ flight }: { flight: BoardingPassFlight })
             {/* From */}
             <div className="text-center">
               <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-2 shadow-lg"
+                className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-2 shadow-lg"
                 style={{ backgroundColor: `${flight.from.color}33`, border: `2px solid ${flight.from.color}66` }}
               >
-                {flight.from.emoji}
+                <PlatformLogo slug={flight.from.slug} className="w-9 h-9" color={flight.from.color} />
               </div>
               <p className="text-2xl font-black">{flight.from.name.split('/')[0].slice(0, 3).toUpperCase()}</p>
               <p className="text-white/70 text-xs">{flight.from.name}</p>
@@ -58,10 +59,10 @@ export default function BoardingPass({ flight }: { flight: BoardingPassFlight })
             {/* To */}
             <div className="text-center">
               <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-2 shadow-lg"
+                className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-2 shadow-lg"
                 style={{ backgroundColor: `${flight.to.color}33`, border: `2px solid ${flight.to.color}66` }}
               >
-                {flight.to.emoji}
+                <PlatformLogo slug={flight.to.slug} className="w-9 h-9" color={flight.to.color} />
               </div>
               <p className="text-2xl font-black">{flight.to.name.split('/')[0].slice(0, 3).toUpperCase()}</p>
               <p className="text-white/70 text-xs">{flight.to.name}</p>
@@ -122,7 +123,7 @@ export default function BoardingPass({ flight }: { flight: BoardingPassFlight })
           </div>
 
           <p className="text-center text-[10px] text-slate-300 mt-2 font-mono tracking-widest">
-            BYTEPASS · STAMP YOUR INTERNET
+            CLOUD TRIP · STAMP YOUR INTERNET
           </p>
         </div>
       </div>

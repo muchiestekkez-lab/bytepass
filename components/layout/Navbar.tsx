@@ -22,7 +22,7 @@ export default function Navbar({ username }: NavbarProps) {
         href="/dashboard"
         className="font-display text-xl font-black gradient-text bg-gradient-to-r from-[#FF6EC7] via-[#7B61FF] to-[#00D1FF]"
       >
-        BytePass ✈️
+        Cloud Trip ☁️✈️
       </Link>
 
       <div className="flex items-center gap-3">

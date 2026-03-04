@@ -2,12 +2,13 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getAuthUser } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { calcInternetAge, getCitizenLevel, formatDate, getUniqueStamps } from '@/lib/utils';
+import { calcInternetAge, getCitizenLevel, getUniqueStamps } from '@/lib/utils';
 import PassportCover from '@/components/passport/PassportCover';
-import StampGrid from '@/components/passport/StampGrid';
 import FlightCard from '@/components/flights/FlightCard';
+import DownloadButton from '@/components/ui/DownloadButton';
 
-export const metadata = { title: 'My Passport — BytePass' };
+export const dynamic = 'force-dynamic';
+export const metadata = { title: 'My Passport — Cloud Trip' };
 
 export default async function PassportPage() {
   const auth = await getAuthUser();
@@ -32,35 +33,31 @@ export default async function PassportPage() {
 
   return (
     <div className="space-y-8 animate-fade-in">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="font-display text-3xl font-black text-slate-800">My Passport 🛂</h1>
-        <Link
-          href={`/u/${user.username}`}
-          target="_blank"
-          className="px-5 py-2.5 rounded-xl text-sm font-bold bg-white/80 border border-slate-200 text-slate-700 hover:bg-white hover:shadow-md transition-all"
-        >
-          View Public Profile →
-        </Link>
+        <div className="flex items-center gap-3 flex-wrap">
+          <DownloadButton targetId="passport-card" filename={`cloudtrip-passport-${user.username}.png`} label="Download Passport" />
+          <Link
+            href={`/u/${user.username}`}
+            target="_blank"
+            className="px-5 py-2.5 rounded-xl text-sm font-bold bg-white/80 border border-slate-200 text-slate-700 hover:bg-white hover:shadow-md transition-all"
+          >
+            View Public Profile →
+          </Link>
+        </div>
       </div>
 
-      {/* Passport booklet */}
-      <PassportCover
-        username={user.username}
-        bio={user.bio}
-        internetAge={internetAge}
-        citizenLevel={citizenLevel}
-        createdAt={user.createdAt}
-        totalFlights={totalFlights}
-      />
-
-      {/* Stamp grid */}
-      <div>
-        <h2 className="font-display text-xl font-bold text-slate-800 mb-4">
-          Stamps Collected{' '}
-          <span className="text-[#7B61FF]">{visitedSlugs.size}</span>
-          <span className="text-slate-400">/9</span>
-        </h2>
-        <StampGrid visitedSlugs={visitedSlugs} />
+      {/* Passport booklet — stamps are now INSIDE PassportCover */}
+      <div id="passport-card">
+        <PassportCover
+          username={user.username}
+          bio={user.bio}
+          internetAge={internetAge}
+          citizenLevel={citizenLevel}
+          createdAt={user.createdAt}
+          totalFlights={totalFlights}
+          visitedSlugs={visitedSlugs}
+        />
       </div>
 
       {/* Travel history */}

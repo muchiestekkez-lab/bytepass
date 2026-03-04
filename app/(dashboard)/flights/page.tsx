@@ -4,7 +4,7 @@ import { getAuthUser } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import FlightCard from '@/components/flights/FlightCard';
 
-export const metadata = { title: 'My Flights — BytePass' };
+export const metadata = { title: 'My Flights — Cloud Trip' };
 
 export default async function FlightsPage() {
   const auth = await getAuthUser();

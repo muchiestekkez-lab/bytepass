@@ -8,7 +8,7 @@ import CitizenBadge from '@/components/analytics/CitizenBadge';
 import FlightCard from '@/components/flights/FlightCard';
 import Card from '@/components/ui/Card';
 
-export const metadata = { title: 'Dashboard — BytePass' };
+export const metadata = { title: 'Dashboard — Cloud Trip' };
 
 export default async function DashboardPage() {
   const auth = await getAuthUser();

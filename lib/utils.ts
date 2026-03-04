@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 export function generateFlightNumber(): string {
   const year = new Date().getFullYear();
   const rand = Math.floor(1000 + Math.random() * 9000);
-  return `BP-${year}-${rand}`;
+  return `CT-${year}-${rand}`;
 }
 
 /** Calculate internet age from the year the user started */

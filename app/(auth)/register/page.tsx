@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import RegisterForm from '@/components/auth/RegisterForm';
 
-export const metadata = { title: 'Create Passport — BytePass' };
+export const metadata = { title: 'Create Passport — Cloud Trip' };
 
 export default function RegisterPage() {
   return (
@@ -9,7 +9,7 @@ export default function RegisterPage() {
       {/* Logo */}
       <div className="text-center mb-8">
         <Link href="/" className="font-display text-3xl font-black gradient-text bg-gradient-to-r from-[#FF6EC7] via-[#7B61FF] to-[#00D1FF]">
-          BytePass ✈️
+          Cloud Trip ☁️✈️
         </Link>
         <p className="text-slate-500 mt-2 text-sm">Create your Internet Passport.</p>
       </div>
