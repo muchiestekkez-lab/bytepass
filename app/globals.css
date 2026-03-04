@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Custom base styles ─────────────────────────────────── */
+@layer base {
+  :root {
+    --font-display: 'Syne', sans-serif;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+
+  * {
+    @apply border-border;
+  }
+}
+
+/* ── Utility classes ────────────────────────────────────── */
+@layer utilities {
+  /* Gradient text helper */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+  }
+
+  /* Glass card */
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/40;
+  }
+
+  /* Stamp circle dashed border */
+  .stamp-border {
+    border: 3px dashed rgba(255, 255, 255, 0.6);
+  }
+
+  /* Scrollbar hide */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* ── Animated gradient background ──────────────────────── */
+.animated-bg {
+  background: linear-gradient(-45deg, #ffd6f5, #d6c5ff, #c5f0ff, #ffd6c5);
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ── Boarding pass torn edge ────────────────────────────── */
+.torn-edge {
+  position: relative;
+}
+.torn-edge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -1px;
+  width: 24px;
+  height: 100%;
+  background: radial-gradient(circle at left, transparent 60%, white 60%) 0 0 / 24px 24px repeat-y;
+  z-index: 1;
+}
+
+/* ── Passport page texture ──────────────────────────────── */
+.passport-texture {
+  background-color: #1e3a5f;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.02) 0px,
+      rgba(255,255,255,0.02) 1px,
+      transparent 1px,
+      transparent 10px
+    );
+}
+
+/* ── Input focus ring ───────────────────────────────────── */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.25);
+}

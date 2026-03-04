@@ -1,0 +1,48 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String   @unique
+  password     String
+  internetYear Int      // the year they started using the internet
+  bio          String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  flights      Flight[]
+}
+
+model Platform {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  color       String   // primary hex color
+  gradient    String   // tailwind gradient classes e.g. "from-pink-500 to-purple-600"
+  emoji       String
+  description String?
+  order       Int      @default(0)
+
+  fromFlights Flight[] @relation("FromPlatform")
+  toFlights   Flight[] @relation("ToPlatform")
+}
+
+model Flight {
+  id           String   @id @default(cuid())
+  flightNumber String   @unique
+  userId       String
+  fromId       String
+  toId         String
+  reason       String?
+  createdAt    DateTime @default(now())
+
+  user User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  from Platform @relation("FromPlatform", fields: [fromId], references: [id])
+  to   Platform @relation("ToPlatform", fields: [toId], references: [id])
+}
