@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 const links = [
   { href: '/dashboard', label: 'Dashboard', emoji: '🏠' },
   { href: '/passport', label: 'My Passport', emoji: '🛂' },
+  { href: '/feed', label: 'Activity Feed', emoji: '🌍' },
   { href: '/flights', label: 'Flights', emoji: '✈️' },
   { href: '/flights/new', label: 'Log Flight', emoji: '🛫' },
   { href: '/settings', label: 'Settings', emoji: '⚙️' },

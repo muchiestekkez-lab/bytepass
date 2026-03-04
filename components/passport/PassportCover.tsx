@@ -1,6 +1,7 @@
 import { formatDate } from '@/lib/utils';
 import { PLATFORMS } from '@/lib/platforms';
 import PlatformLogo from '@/components/ui/PlatformLogo';
+import { getPassportColor } from '@/lib/passportColors';
 
 interface PassportCoverProps {
   username: string;
@@ -11,6 +12,7 @@ interface PassportCoverProps {
   createdAt: Date;
   totalFlights: number;
   visitedSlugs: Set<string>;
+  passportColor?: string;
 }
 
 export default function PassportCover({
@@ -22,14 +24,17 @@ export default function PassportCover({
   createdAt,
   totalFlights,
   visitedSlugs,
+  passportColor = 'indigo',
 }: PassportCoverProps) {
+  const colorPreset = getPassportColor(passportColor);
+
   return (
     <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-700/40">
       {/* ── Cover page ── */}
-      <div className="passport-texture px-8 py-10 text-white">
+      <div className="px-8 py-10 text-white" style={{ background: colorPreset.gradient }}>
         <div className="flex items-start justify-between mb-8">
           <div>
-            <p className="text-blue-300/70 text-xs font-semibold uppercase tracking-widest mb-0.5">
+            <p className="text-xs font-semibold uppercase tracking-widest mb-0.5" style={{ color: `${colorPreset.accent}bb` }}>
               Internet Passport
             </p>
             <p className="text-white/40 text-[10px] tracking-widest">CLOUD TRIP · DIGITAL REPUBLIC</p>
@@ -51,9 +56,9 @@ export default function PassportCover({
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-blue-200/50 text-[10px] uppercase tracking-widest mb-0.5">Passport Holder</p>
+            <p className="text-[10px] uppercase tracking-widest mb-0.5" style={{ color: `${colorPreset.accent}88` }}>Passport Holder</p>
             <h2 className="font-display text-2xl font-black text-white truncate">@{username}</h2>
-            {bio && <p className="text-blue-200/60 text-xs mt-1 line-clamp-2">{bio}</p>}
+            {bio && <p className="text-xs mt-1 line-clamp-2" style={{ color: `${colorPreset.accent}99` }}>{bio}</p>}
           </div>
         </div>
 

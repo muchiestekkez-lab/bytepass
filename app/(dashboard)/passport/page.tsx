@@ -22,6 +22,7 @@ export default async function PassportPage() {
         orderBy: { createdAt: 'desc' },
       },
     },
+    // passportColor is on the model itself (not in include) — it comes back via include automatically
   });
 
   if (!user) redirect('/login');
@@ -58,6 +59,7 @@ export default async function PassportPage() {
           createdAt={user.createdAt}
           totalFlights={totalFlights}
           visitedSlugs={visitedSlugs}
+          passportColor={user.passportColor}
         />
       </div>
 

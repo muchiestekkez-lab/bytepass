@@ -2,12 +2,14 @@
 
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { PASSPORT_COLORS } from '@/lib/passportColors';
 
 interface SettingsFormProps {
   username: string;
   currentInternetYear: number;
   currentBio: string;
   currentAvatar: string | null;
+  currentPassportColor: string;
 }
 
 /** Resize an image file to 200x200 and return as base64 JPEG data URL */
@@ -41,6 +43,7 @@ export default function SettingsForm({
   currentInternetYear,
   currentBio,
   currentAvatar,
+  currentPassportColor,
 }: SettingsFormProps) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -52,6 +55,7 @@ export default function SettingsForm({
   const [bio, setBio] = useState(currentBio);
   const [avatar, setAvatar] = useState<string | null>(currentAvatar);
   const [avatarChanged, setAvatarChanged] = useState(false);
+  const [passportColor, setPassportColor] = useState(currentPassportColor);
 
   const currentYear = new Date().getFullYear();
 
@@ -83,6 +87,7 @@ export default function SettingsForm({
     const body: Record<string, unknown> = {
       internetYear: Number(internetYear),
       bio,
+      passportColor,
     };
     if (avatarChanged) body.avatar = avatar;
 
@@ -204,6 +209,37 @@ export default function SettingsForm({
           placeholder="Professional internet lurker. Part-time meme archivist."
         />
         <p className="text-xs text-slate-400 mt-1">{bio.length}/160</p>
+      </div>
+
+      {/* ── Passport cover color ── */}
+      <div>
+        <label className="block text-sm font-semibold text-slate-700 mb-3">
+          Passport Cover Color
+        </label>
+        <div className="flex flex-wrap gap-3">
+          {PASSPORT_COLORS.map((preset) => (
+            <button
+              key={preset.slug}
+              type="button"
+              onClick={() => setPassportColor(preset.slug)}
+              title={preset.label}
+              className={`relative w-10 h-10 rounded-full transition-all hover:scale-110 ${
+                passportColor === preset.slug ? 'ring-2 ring-offset-2' : ''
+              }`}
+              style={{
+                background: preset.gradient,
+                ringColor: preset.ring,
+              }}
+            >
+              {passportColor === preset.slug && (
+                <span className="absolute inset-0 flex items-center justify-center text-white text-sm font-black">✓</span>
+              )}
+            </button>
+          ))}
+        </div>
+        <p className="text-xs text-slate-400 mt-2">
+          {PASSPORT_COLORS.find((c) => c.slug === passportColor)?.label}
+        </p>
       </div>
 
       <button

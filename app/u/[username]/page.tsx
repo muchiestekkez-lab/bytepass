@@ -1,9 +1,11 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
+import { getAuthUser } from '@/lib/auth';
 import { calcInternetAge, getCitizenLevel, getUniqueStamps } from '@/lib/utils';
 import PassportCover from '@/components/passport/PassportCover';
 import FlightCard from '@/components/flights/FlightCard';
+import FollowButton from '@/components/social/FollowButton';
 
 export async function generateMetadata({ params }: { params: { username: string } }) {
   return {
@@ -13,23 +15,37 @@ export async function generateMetadata({ params }: { params: { username: string 
 }
 
 export default async function PublicProfilePage({ params }: { params: { username: string } }) {
-  const user = await prisma.user.findUnique({
-    where: { username: params.username },
-    select: {
-      id: true,
-      username: true,
-      bio: true,
-      avatar: true,
-      internetYear: true,
-      createdAt: true,
-      flights: {
-        include: { from: true, to: true },
-        orderBy: { createdAt: 'desc' },
+  const [user, auth] = await Promise.all([
+    prisma.user.findUnique({
+      where: { username: params.username },
+      select: {
+        id: true,
+        username: true,
+        bio: true,
+        avatar: true,
+        internetYear: true,
+        passportColor: true,
+        createdAt: true,
+        flights: {
+          include: { from: true, to: true },
+          orderBy: { createdAt: 'desc' },
+        },
+        _count: { select: { followers: true, following: true } },
       },
-    },
-  });
+    }),
+    getAuthUser(),
+  ]);
 
   if (!user) notFound();
+
+  // Check if current viewer follows this user
+  let isFollowing = false;
+  if (auth && auth.userId !== user.id) {
+    const follow = await prisma.follow.findUnique({
+      where: { followerId_followingId: { followerId: auth.userId, followingId: user.id } },
+    });
+    isFollowing = !!follow;
+  }
 
   const totalFlights = user.flights.length;
   const citizenLevel = getCitizenLevel(totalFlights);
@@ -55,6 +71,17 @@ export default async function PublicProfilePage({ params }: { params: { username
       </nav>
 
       <div className="max-w-3xl mx-auto px-6 py-8 space-y-8">
+        {/* Follow header */}
+        {auth && auth.userId !== user.id && (
+          <div className="flex items-center justify-between bg-white/70 backdrop-blur-sm rounded-2xl px-5 py-3 border border-white/60">
+            <div className="flex items-center gap-5 text-sm text-slate-600">
+              <span><strong className="text-slate-800">{user._count.followers}</strong> followers</span>
+              <span><strong className="text-slate-800">{user._count.following}</strong> following</span>
+            </div>
+            <FollowButton username={user.username} initialFollowing={isFollowing} />
+          </div>
+        )}
+
         {/* Passport — stamps are integrated inside */}
         <PassportCover
           username={user.username}
@@ -65,6 +92,7 @@ export default async function PublicProfilePage({ params }: { params: { username
           createdAt={user.createdAt}
           totalFlights={totalFlights}
           visitedSlugs={visitedSlugs}
+          passportColor={user.passportColor}
         />
 
         {/* Share button */}

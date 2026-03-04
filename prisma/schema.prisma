@@ -8,17 +8,23 @@ generator client {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  username     String   @unique
-  email        String   @unique
-  password     String?  // nullable — Google users have no password
-  googleId     String?  @unique
-  avatar       String?  // Google profile picture URL
-  internetYear Int      // the year they started using the internet
-  bio          String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  flights      Flight[]
+  id             String   @id @default(cuid())
+  username       String   @unique
+  email          String   @unique
+  password       String?  // nullable — Google users have no password
+  googleId       String?  @unique
+  avatar         String?  // Google profile picture URL
+  internetYear   Int      // the year they started using the internet
+  bio            String?
+  passportColor  String   @default("indigo")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  flights    Flight[]
+  following  Follow[]   @relation("Follower")
+  followers  Follow[]   @relation("Following")
+  reactions  Reaction[]
+  comments   Comment[]
 }
 
 model Platform {
@@ -44,7 +50,45 @@ model Flight {
   reason       String?
   createdAt    DateTime @default(now())
 
-  user User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  from Platform @relation("FromPlatform", fields: [fromId], references: [id])
-  to   Platform @relation("ToPlatform", fields: [toId], references: [id])
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  from      Platform   @relation("FromPlatform", fields: [fromId], references: [id])
+  to        Platform   @relation("ToPlatform", fields: [toId], references: [id])
+  reactions Reaction[]
+  comments  Comment[]
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower  User @relation("Follower",  fields: [followerId],  references: [id], onDelete: Cascade)
+  following User @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+}
+
+model Reaction {
+  id        String   @id @default(cuid())
+  emoji     String
+  userId    String
+  flightId  String
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId],   references: [id], onDelete: Cascade)
+  flight Flight @relation(fields: [flightId], references: [id], onDelete: Cascade)
+
+  @@unique([flightId, userId, emoji])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  body      String
+  userId    String
+  flightId  String
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId],   references: [id], onDelete: Cascade)
+  flight Flight @relation(fields: [flightId], references: [id], onDelete: Cascade)
 }

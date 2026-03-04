@@ -9,7 +9,7 @@ export async function PATCH(req: Request) {
   if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const body = await req.json();
-  const { internetYear, bio, avatar } = body;
+  const { internetYear, bio, avatar, passportColor } = body;
 
   const currentYear = new Date().getFullYear();
   if (internetYear !== undefined) {
@@ -28,14 +28,20 @@ export async function PATCH(req: Request) {
     }
   }
 
+  const VALID_COLORS = ['indigo', 'rose', 'emerald', 'amber', 'sky', 'violet'];
+  if (passportColor !== undefined && !VALID_COLORS.includes(passportColor)) {
+    return NextResponse.json({ error: 'Invalid passport color' }, { status: 400 });
+  }
+
   const user = await prisma.user.update({
     where: { id: auth.userId },
     data: {
       ...(internetYear !== undefined ? { internetYear: Number(internetYear) } : {}),
       ...(bio !== undefined ? { bio: String(bio).slice(0, 160) } : {}),
       ...(avatar !== undefined ? { avatar: avatar ?? null } : {}),
+      ...(passportColor !== undefined ? { passportColor } : {}),
     },
   });
 
-  return NextResponse.json({ ok: true, internetYear: user.internetYear, bio: user.bio, avatar: user.avatar });
+  return NextResponse.json({ ok: true, internetYear: user.internetYear, bio: user.bio, avatar: user.avatar, passportColor: user.passportColor });
 }
