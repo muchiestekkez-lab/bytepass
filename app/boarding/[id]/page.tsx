@@ -68,7 +68,7 @@ export default async function BoardingPassPage({ params }: { params: { id: strin
   return (
     <div className="min-h-screen animated-bg flex flex-col items-center justify-center p-6">
       <Link
-        href="/"
+        href={auth ? '/dashboard' : '/'}
         className="mb-8 text-sm text-slate-500 hover:text-slate-700 font-medium transition-colors"
       >
         ← Cloud Trip

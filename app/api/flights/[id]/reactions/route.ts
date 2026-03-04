@@ -27,7 +27,7 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
   return NextResponse.json({ counts, mine });
 }
 
-/** POST /api/flights/[id]/reactions — toggle reaction { emoji } */
+/** POST /api/flights/[id]/reactions — set ONE reaction per user (switch or add, never remove) */
 export async function POST(req: Request, { params }: { params: { id: string } }) {
   const auth = await getAuthUser();
   if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -37,15 +37,21 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     return NextResponse.json({ error: 'Invalid emoji' }, { status: 400 });
   }
 
-  const key = { flightId: params.id, userId: auth.userId, emoji };
+  // Find any existing reaction this user has on this flight
+  const existing = await prisma.reaction.findFirst({
+    where: { flightId: params.id, userId: auth.userId },
+  });
 
-  const existing = await prisma.reaction.findUnique({ where: { flightId_userId_emoji: key } });
-
-  if (existing) {
-    await prisma.reaction.delete({ where: { flightId_userId_emoji: key } });
-    return NextResponse.json({ reacted: false, emoji });
-  } else {
-    await prisma.reaction.create({ data: key });
-    return NextResponse.json({ reacted: true, emoji });
+  // Already reacted with the same emoji — nothing to do
+  if (existing?.emoji === emoji) {
+    return NextResponse.json({ reacted: true, emoji, changed: false });
   }
+
+  // Delete previous reaction (if any), then create the new one
+  if (existing) {
+    await prisma.reaction.delete({ where: { flightId_userId_emoji: { flightId: params.id, userId: auth.userId, emoji: existing.emoji } } });
+  }
+  await prisma.reaction.create({ data: { flightId: params.id, userId: auth.userId, emoji } });
+
+  return NextResponse.json({ reacted: true, emoji, oldEmoji: existing?.emoji ?? null, changed: true });
 }
