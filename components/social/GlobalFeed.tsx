@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import PlatformLogo from '@/components/ui/PlatformLogo';
 
-interface FeedFlight {
+export interface FeedFlight {
   id: string;
   flightNumber: string;
   reason: string | null;
-  createdAt: string;
+  createdAt: string | Date;
   user: { username: string; avatar: string | null };
   from: { name: string; slug: string; color: string };
   to:   { name: string; slug: string; color: string };
@@ -20,7 +20,7 @@ interface GlobalFeedProps {
   endpoint: string; // '/api/feed/global' or '/api/feed/following'
 }
 
-function timeAgo(dateStr: string): string {
+function timeAgo(dateStr: string | Date): string {
   const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
   if (seconds < 60) return `${seconds}s ago`;
   if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;

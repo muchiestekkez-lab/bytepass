@@ -223,12 +223,11 @@ export default function SettingsForm({
               type="button"
               onClick={() => setPassportColor(preset.slug)}
               title={preset.label}
-              className={`relative w-10 h-10 rounded-full transition-all hover:scale-110 ${
-                passportColor === preset.slug ? 'ring-2 ring-offset-2' : ''
-              }`}
+              className="relative w-10 h-10 rounded-full transition-all hover:scale-110"
               style={{
                 background: preset.gradient,
-                ringColor: preset.ring,
+                outline: passportColor === preset.slug ? `3px solid ${preset.ring}` : 'none',
+                outlineOffset: '2px',
               }}
             >
               {passportColor === preset.slug && (
